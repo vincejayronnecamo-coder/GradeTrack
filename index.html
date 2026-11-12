@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fc">
+  <meta name="description" content="A private, offline grade tracker for managing subjects, scores, and academic goals.">
+  <title>GradeTrack — Academic planner</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <div class="app-shell">
+    <div class="mobile-scrim" id="mobileScrim" hidden></div>
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#dashboard" aria-label="GradeTrack dashboard">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M5 18V6m0 12h14M8 14l3-4 3 2 4-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="6" r="1.5" fill="currentColor"/></svg></span>
+        <span>Grade<span class="brand-light">Track</span><small>STUDENT WORKSPACE</small></span>
+      </a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav-list" id="mainNav">
+        <button class="nav-item is-active" data-page="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+        <button class="nav-item" data-page="subjects"><span class="nav-icon">▤</span>My subjects<span class="nav-count" id="navSubjectCount">0</span></button>
+        <button class="nav-item" data-page="calculator"><span class="nav-icon">∑</span>Grade calculator</button>
+        <button class="nav-item" data-page="targets"><span class="nav-icon">◎</span>Target planner</button>
+        <button class="nav-item" data-page="performance"><span class="nav-icon">↗</span>Performance</button>
+        <button class="nav-item" data-page="history"><span class="nav-icon">◷</span>Grade history</button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-tip"><span class="tip-icon">✦</span><strong>Your space, your pace</strong><p>Your grades stay private on this device. No account needed.</p></div>
+      <button class="nav-item settings-link" data-page="settings"><span class="nav-icon">⚙</span>Settings</button>
+      <div class="sidebar-foot"><span class="online-dot"></span>Offline-ready <span class="foot-version">v1.0</span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="icon-button menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
+        <div class="breadcrumbs"><span>Workspace</span><span class="crumb-slash">/</span><strong id="pageCrumb">Dashboard</strong></div>
+        <div class="topbar-actions"><button class="print-button" id="printButton" type="button">Print page</button><span class="today-label" id="todayLabel"></span><span class="avatar" title="Your local workspace" role="img" aria-label="Student workspace">S</span></div>
+      </header>
+      <div class="page-wrap">
+        <section class="page is-visible" id="page-dashboard" data-title="Dashboard">
+          <div class="welcome-banner"><div class="welcome-copy"><span class="eyebrow light-eyebrow">YOUR ACADEMIC OVERVIEW</span><h1>A little progress<br>adds up.</h1><p>Keep your goals in sight and your next step clear.</p><button class="button button-light" data-go="subjects">Explore my subjects <span>→</span></button></div><div class="welcome-art" aria-hidden="true"><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-card"><span class="art-check">✓</span><div class="art-line art-line-wide"></div><div class="art-line"></div><div class="art-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div><span class="art-spark spark-a">✦</span><span class="art-spark spark-b">✧</span></div><div class="banner-glow"></div></div>
+          <div class="section-heading dashboard-heading"><div><span class="eyebrow">AT A GLANCE</span><h2>Your semester so far</h2></div><button class="text-button" data-go="performance">View performance <span>→</span></button></div>
+          <div class="stats-grid">
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon blue-icon">▤</span><span class="stat-trend">THIS SEMESTER</span></div><div class="stat-value" id="dashSubjectCount">0</div><div class="stat-label">Subjects tracked</div><div class="stat-foot"><span class="dot dot-blue"></span><span id="dashSubjectFoot">Start by adding a subject</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon purple-icon">◉</span><span class="stat-trend">COMPLETED WORK</span></div><div class="stat-value" id="dashAverage">—</div><div class="stat-label">Current average</div><div class="stat-foot"><span class="dot dot-purple"></span><span>Across subjects with scores</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon mint-icon">✓</span><span class="stat-trend">ON TRACK</span></div><div class="stat-value" id="dashPassed">0</div><div class="stat-label">Subjects passed</div><div class="stat-foot"><span class="dot dot-green"></span><span id="dashPassedFoot">Based on your passing mark</span></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon coral-icon">!</span><span class="stat-trend">NEEDS A LOOK</span></div><div class="stat-value" id="dashRisk">0</div><div class="stat-label">Subjects at risk</div><div class="stat-foot"><span class="dot dot-coral"></span><span id="dashRiskFoot">Room to improve</span></div></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="panel chart-panel"><div class="panel-heading"><div><h3>Subject performance</h3><p>Your current standing in each subject</p></div><button class="more-button" data-go="performance">See all <span>→</span></button></div><div class="performance-chart" id="subjectChart"></div></article>
+            <article class="panel distribution-panel"><div class="panel-heading"><div><h3>Grade distribution</h3><p>How your subjects are shaping up</p></div><span class="chart-menu" aria-hidden="true">···</span></div><div class="distribution-chart" id="distributionChart"></div><div class="chart-legend"><span><i class="legend-dot legend-excellent"></i>Excellent</span><span><i class="legend-dot legend-good"></i>Good</span><span><i class="legend-dot legend-satisfactory"></i>Satisfactory</span><span><i class="legend-dot legend-risk"></i>At risk</span></div></article>
+          </div>
+          <div class="dashboard-grid lower-grid">
+            <article class="panel recent-panel"><div class="panel-heading"><div><h3>Recent activity</h3><p>Your latest grade updates</p></div><button class="more-button" data-go="history">View history <span>→</span></button></div><div id="recentActivity" class="activity-list"></div></article>
+            <article class="panel progress-panel"><div class="panel-heading"><div><h3>Academic progress</h3><p>A quick look at your semester</p></div><span class="progress-ring-icon">↗</span></div><div id="academicProgress"></div></article>
+          </div>
+        </section>
+
+        <section class="page" id="page-subjects" data-title="My subjects">
+          <div class="page-title-row"><div><span class="eyebrow">YOUR COURSE LOAD</span><h1>My subjects</h1><p class="page-subtitle">All your courses, scores, and progress in one place.</p></div><button class="button button-primary" id="addSubjectBtn"><span class="button-plus">＋</span> Add subject</button></div>
+          <div class="subject-toolbar"><span id="subjectResults">0 subjects</span><span class="toolbar-note"><i class="online-dot"></i> Saved automatically</span></div>
+          <div class="subject-grid" id="subjectGrid"></div>
+        </section>
+
+        <section class="page" id="page-calculator" data-title="Grade calculator">
+          <div class="page-title-row"><div><span class="eyebrow">SCORE BY SCORE</span><h1>Grade calculator</h1><p class="page-subtitle">Enter assessment results to see your current weighted grade update.</p></div></div>
+          <div class="calculator-layout"><article class="panel calculator-panel"><div class="panel-heading calculator-heading"><div><h3>Assessment scores</h3><p>Only completed work counts toward your current performance.</p></div><label class="select-wrap"><span class="sr-only">Select subject</span><select id="calculatorSubject"></select></label></div><div id="calculatorContent"></div></article><aside class="calculator-side"><article class="grade-summary-card" id="calculatorSummary" aria-live="polite"></article><article class="panel formula-panel"><span class="formula-icon">∑</span><h3>How it works</h3><p>Each score is converted to a percentage, then multiplied by its component weight.</p><div class="formula-box">(score ÷ total) × weight</div><small>Unfinished assessments are excluded from your current average.</small></article></aside></div>
+        </section>
+
+        <section class="page" id="page-targets" data-title="Target planner">
+          <div class="page-title-row"><div><span class="eyebrow">PLAN YOUR NEXT MOVE</span><h1>Target grade planner</h1><p class="page-subtitle">Find out what you need on the remaining assessments to reach your goal.</p></div></div>
+          <div class="target-layout"><article class="panel target-form-panel"><div class="target-intro-icon">◎</div><h2>Set your goal</h2><p>Choose a subject and enter the final grade you’re aiming for.</p><div class="target-fields"><label class="form-field"><span>Subject</span><select id="targetSubject"></select></label><label class="form-field"><span>Target final grade</span><div class="input-with-unit"><input id="targetGradeInput" type="number" min="0" max="100" step="0.1"><span>%</span></div></label></div><button class="button button-primary target-calculate" id="calculateTargetBtn">Calculate my target <span>→</span></button></article><article class="panel target-result" id="targetResult" aria-live="polite"><div class="result-placeholder"><span class="result-orbit">◎</span><h3>Your plan starts here</h3><p>Choose a subject and calculate the scores you’ll need.</p></div></article></div>
+          <article class="panel target-guide"><div class="guide-icon">✦</div><div><strong>Small steps, clear goals</strong><p>Your estimate uses the weights of ungraded components. Actual course rules may vary, so confirm them with your instructor.</p></div></article>
+        </section>
+
+        <section class="page" id="page-performance" data-title="Performance">
+          <div class="page-title-row"><div><span class="eyebrow">THE BIGGER PICTURE</span><h1>Performance tracker</h1><p class="page-subtitle">See where you’re thriving and where a little extra focus can help.</p></div></div>
+          <div class="performance-overview" id="performanceOverview"></div>
+          <div class="dashboard-grid performance-grid"><article class="panel"><div class="panel-heading"><div><h3>Progress by subject</h3><p>Completed work and current performance</p></div></div><div id="performanceSubjects"></div></article><article class="panel trend-panel"><div class="panel-heading"><div><h3>Grade trend</h3><p>Average grade snapshots over time</p></div></div><div id="trendChart"></div></article></div>
+        </section>
+
+        <section class="page" id="page-history" data-title="Grade history">
+          <div class="page-title-row"><div><span class="eyebrow">YOUR JOURNEY, RECORDED</span><h1>Grade history</h1><p class="page-subtitle">A timeline of the grade updates you’ve made.</p></div></div>
+          <article class="panel history-panel"><div class="panel-heading"><div><h3>Grade updates</h3><p>Each saved score change is kept on this device.</p></div><span class="history-count" id="historyCount">0 updates</span></div><div class="history-table-wrap"><table class="history-table"><thead><tr><th>SUBJECT</th><th>PREVIOUS</th><th>CURRENT</th><th>CHANGE</th><th>DATE RECORDED</th></tr></thead><tbody id="historyRows"></tbody></table></div><div id="historyEmpty" class="empty-state" hidden><span class="empty-illustration">◷</span><strong>No grade history yet</strong><p>When you save a score, the change will appear here.</p></div></article>
+        </section>
+
+        <section class="page" id="page-settings" data-title="Settings">
+          <div class="page-title-row"><div><span class="eyebrow">MAKE IT YOURS</span><h1>Settings</h1><p class="page-subtitle">Adjust your grading preferences and local data.</p></div></div>
+          <div class="settings-layout"><form class="panel settings-panel" id="settingsForm"><div class="settings-section"><div class="settings-section-icon">⚑</div><div class="settings-section-copy"><h3>Grading preferences</h3><p>Choose the defaults used for your subjects and target planner.</p></div></div><label class="form-field"><span>Default passing grade</span><div class="input-with-unit"><input id="settingPass" type="number" min="0" max="100" step="0.1" required><span>%</span></div><small>Used to determine whether a subject is on track.</small></label><label class="form-field"><span>Default target grade</span><div class="input-with-unit"><input id="settingTarget" type="number" min="0" max="100" step="0.1" required><span>%</span></div><small>Pre-filled in your target planner.</small></label><div class="settings-section settings-section-spaced"><div class="settings-section-icon purple-setting-icon">⇄</div><div class="settings-section-copy"><h3>Grade display</h3><p>Percentage is the standard. Add your school's scale endpoints for an equivalent display.</p></div></div><label class="form-field"><span>Display format</span><select id="settingDisplay"><option value="percent">Percentage</option><option value="custom">Custom equivalent scale</option></select></label><div class="scale-fields" id="scaleFields"><label class="form-field"><span>Equivalent at 100%</span><input id="settingScaleTop" type="number" step="0.01"></label><label class="form-field"><span>Equivalent at 0%</span><input id="settingScaleBottom" type="number" step="0.01"></label><small>These endpoints define a simple linear conversion. Enter the values your school uses.</small></div><div class="settings-actions"><button class="button button-primary" type="submit">Save preferences</button><span id="settingsSaved" class="saved-note" role="status"></span></div></form><aside class="settings-aside"><article class="panel about-panel"><span class="about-mark">G</span><h3>About GradeTrack</h3><p>A simple academic companion for organizing subjects, understanding weighted grades, and planning your next goal.</p><div class="about-detail"><span>Version</span><strong>1.0</strong></div><div class="about-detail"><span>Data storage</span><strong>This device only</strong></div><div class="privacy-callout"><span>♧</span><p>Your records stay in this browser. GradeTrack does not send your data to a server.</p></div></article><article class="panel backup-panel"><span class="danger-label">BACKUP &amp; RESTORE</span><h3>Keep a copy of your grades</h3><p>Download a local backup or restore data from a GradeTrack JSON file.</p><div class="backup-actions"><button class="button button-secondary" id="exportBackupBtn" type="button">Export backup</button><button class="button button-secondary" id="importBackupBtn" type="button">Import backup</button><input id="backupFile" type="file" accept="application/json,.json" hidden></div></article><article class="panel danger-panel"><span class="danger-label">LOCAL DATA</span><h3>Clear all data</h3><p>Remove your subjects, saved preferences, and grade history from this browser.</p><button class="button button-danger" id="clearDataBtn" type="button">Clear local data</button></article></aside></div>
+        </section>
+        <footer class="page-footer"><span>GradeTrack <span id="footerYear"></span></span><span>Made for focus, built for your next step <b>✦</b></span></footer>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="subject-dialog" id="subjectDialog" aria-labelledby="subjectDialogTitle"><form id="subjectForm" class="dialog-form"><div class="dialog-header"><div><span class="eyebrow">SUBJECT DETAILS</span><h2 id="subjectDialogTitle">Add a subject</h2></div><button type="button" class="icon-button dialog-close" id="closeSubjectDialog" aria-label="Close dialog">×</button></div><p class="dialog-description">Add a course and set the weight for each graded component. Weights must total 100%.</p><div class="dialog-fields"><label class="form-field"><span>Subject name</span><input id="subjectName" maxlength="70" placeholder="e.g. Web Development" required></label><label class="form-field"><span>Subject code <small>Optional</small></span><input id="subjectCode" maxlength="24" placeholder="e.g. IT 202"></label><label class="form-field"><span>Passing grade</span><div class="input-with-unit"><input id="subjectPass" type="number" min="0" max="100" step="0.1" required><span>%</span></div></label><label class="form-field"><span>Target grade</span><div class="input-with-unit"><input id="subjectTarget" type="number" min="0" max="100" step="0.1" required><span>%</span></div></label></div><div class="components-heading"><div><h3>Grading components</h3><p>Set weights and scores. You can leave scores blank until graded.</p></div><button class="button button-secondary button-small" type="button" id="addComponentBtn">＋ Add component</button></div><div class="weight-total" id="weightTotal" role="status"></div><div class="component-editor-list" id="componentEditorList"></div><div class="dialog-error" id="subjectFormError" role="alert"></div><div class="dialog-actions"><button type="button" class="button button-secondary" id="cancelSubjectDialog">Cancel</button><button type="submit" class="button button-primary">Save subject</button></div></form></dialog>
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/calculator.js"></script>
+  <script src="js/subjects.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/target-calculator.js"></script>
+  <script src="js/performance.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
